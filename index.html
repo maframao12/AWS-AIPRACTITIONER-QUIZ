@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>AWS Cloud Practitioner Quiz</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: black;
+            color: yellow;
+        }
+
+        .header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .logo {
+            width: 200px;
+            height: auto;
+            margin-bottom: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px; 
+            margin: 0 auto;
+            background: #1a1a1a;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(255, 255, 255, 0.1);
+        }
+
+        /* Ajustes para telas médias (tablets) */
+        @media (max-width: 1024px) {
+            .container {
+                max-width: 90%;
+                padding: 15px;
+            }
+        }
+
+        /* Ajustes para telas pequenas (celulares) */
+        @media (max-width: 600px) {
+            .container {
+                max-width: 90%; 
+                padding: 10px;
+            }
+
+            .btn {
+                width: 100%;
+                padding: 12px 20px;
+                font-size: 14px;
+            }
+
+            h1, h2, h3, p, span, .question, .option {
+            font-size: 16px;
+        }
+            
+            #userName {
+                width: 100%;  
+            }
+        }
+
+        .welcome-screen {
+            text-align: center;
+        }
+
+        .quiz-container {
+            display: none;
+        }
+
+        .question {
+            margin-bottom: 20px;
+        }
+
+        .options {
+            display: grid;
+            gap: 10px;
+        }
+
+        .option {
+            padding: 10px;
+            border: 1px solid yellow;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            color: yellow;
+            background: black;
+        }
+
+        .option:hover {
+            background-color: #333;
+        }
+
+        .selected {
+            background-color: #444;
+            border: 2px solid yellow;
+        }
+
+        .correct {
+            background-color: #006400;
+            color: white;
+        }
+
+        .incorrect {
+            background-color: #8b0000;
+            color: white;
+        }
+
+        .feedback {
+            margin-top: 15px;
+            padding: 10px;
+            border-radius: 4px;
+            display: none;
+            color: yellow;
+            background-color: #1e90ff30; 
+        }
+
+        .timer {
+            font-size: 20px;
+            text-align: center;
+            margin: 10px 0;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            margin: 10px 0;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: 1px solid yellow;
+            border-radius: 4px;
+            cursor: pointer;
+            background-color: black;
+            color: yellow;
+            font-size: 16px;
+            width: 100%; 
+        }
+
+        .btn:hover {
+            background-color: #333;
+        }
+
+        #userName {
+            padding: 10px;
+            margin: 10px;
+            background: black;
+            border: 1px solid yellow;
+            color: yellow;
+        }
+
+        #userName::placeholder {
+            color: #888;
+        }
+
+        .question-instruction {
+            color: yellow;
+            font-style: italic;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <img src="img/ai_practitioner.jpeg" alt="Logo IAPractitioner" class="logo">
+            <h1>Simulado AWS AI Practitioner</h1>
+            <br><br>
+            <p style="color: white;">Desenvolvido por <a href="https://www.linkedin.com/in/emersonmafraam" target="_blank" style="color: salmon;">Emerson Mafra</a></p>
+            <p style="text-align: center; color: yellow; font-size: 14px; margin-top: 20px;">© Todos os direitos reservados</p>
+            <br><br>
+            <span id="nameInstruction" style="color: white;">Digite seu nome para começar</span>
+        </div>
+
+        <div class="welcome-screen">
+            <input type="text" id="userName" placeholder="Digite seu nome">
+            <button onclick="startQuiz()" class="btn">Iniciar Quiz</button>
+        </div>
+
+        <div class="quiz-container">
+            <div class="timer">
+                Tempo: <span id="time">00:00:00</span>
+                <button id="pauseTimer" class="btn">Pausar</button>
+            </div>
+            <div class="question"></div>
+            <div class="options"></div>
+            <div class="feedback"></div>
+            <div class="controls">
+                <button class="btn next-button" onclick="nextQuestion()" style="display: none;">Próxima Pergunta</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Função para iniciar o quiz
+        function startQuiz() {
+            document.querySelector('.welcome-screen').style.display = 'none';
+            document.querySelector('.quiz-container').style.display = 'block';
+        }
+    </script>
+    <script>
+      document.addEventListener('contextmenu', function(e) {
+        e.preventDefault();
+      });
+    </script>
+
+</body>
+</html>
+
+    <script>
+        const questions = [
+            {
+                question: "Uma empresa de dispositivos digitais deseja prever a demanda do cliente por hardware de memória. Qual solução atenderá a esses requisitos?",
+                options: [
+                    "Importe os dados para o Amazon SageMaker Canvas.",
+                    "Importe os dados para o Amazon SageMaker Data Wrangler com Amazon Personalize Trending-Now.",
+                    "Importe os dados para o Amazon SageMaker Data Wrangler.",
+                    "Implemente modelos de ML e previsões de demanda usando o Amazon Forecast."
+                ],
+                correct: 0,
+                explanation: "CORRETO: O Amazon SageMaker Canvas é uma ferramenta no-code da AWS que permite criar modelos de aprendizado de máquina sem necessidade de experiência em programação ou conhecimento profundo de ML. Ele facilita a importação de dados internos e externos, a construção de modelos preditivos e a geração de previsões com poucos cliques."
+            },
+            {
+        question: "Uma empresa está treinando um modelo fundamental (FM). A empresa deseja aumentar a precisão do modelo até um nível de aceitação específico. O que deve ser feito?",
+        options: [
+            "Reduzir o número de épocas (epochs).",
+            "Reduzir o tamanho do lote (batch size).",
+            "Aumentar o número de épocas (epochs).",
+            "Aumentar o parâmetro de temperatura (temperature parameter)."
+        ],
+        correct: 2,
+        explanation: "Treinar um modelo por mais épocas permite que ele aprenda melhor os padrões dos dados, o que pode aumentar a precisão. No entanto, isso deve ser feito com cautela para evitar overfitting."
+    },
+    {
+        question: "Uma empresa construiu um chatbot que pode responder a perguntas em linguagem natural com imagens. A empresa deseja garantir que o chatbot não retorne imagens inadequadas ou indesejadas. Qual é a melhor solução?",
+        options: [
+            "Implementar APIs de moderação.",
+            "Automatizar a integração do feedback do usuário.",
+            "Realizar validação do modelo.",
+            "Treinar novamente o modelo com um conjunto de dados público geral."
+        ],
+        correct: 0,
+        explanation: "APIs de moderação, como Amazon Rekognition e AWS Content Moderation, detectam conteúdo impróprio automaticamente, garantindo que o chatbot não exiba imagens inadequadas."
+    },
+    {
+        question: "Uma empresa de empréstimos deseja construir um modelo de IA de forma responsável para minimizar vieses. Quais ações devem ser tomadas? (Escolha duas)",
+        options: [
+            "Garantir que o modelo seja executado frequentemente.",
+            "Usar a técnica ROUGE para garantir 100% de precisão.",
+            "Avaliar o comportamento do modelo para fornecer transparência.",
+            "Garantir que o tempo de inferência do modelo esteja dentro dos limites aceitáveis.",
+            "Detectar desequilíbrios ou disparidades nos dados."
+        ],
+        correct: [2, 4],
+        explanation: "*Avaliar o comportamento do modelo para que a empresa possa fornecer transparência aos stakeholders-Permite entender como o modelo toma decisões e identificar possíveis vieses.*Detectar desequilíbrios ou disparidades nos dados-Garante que o modelo não esteja treinado com dados enviesados que possam prejudicar certos grupos.",
+        multiSelect: true
+    },
+    {
+        question: "Uma empresa de e-commerce deseja criar uma solução para determinar os sentimentos dos clientes com base em análises escritas sobre produtos. Quais serviços da AWS atendem a esses requisitos? (Escolha duas)",
+        options: [
+            "Amazon Comprehend",
+            "Amazon Lex",
+            "Amazon Rekognition",
+            "Amazon Bedrock",
+            "Amazon Polly"
+        ],
+        correct: [0, 3],
+        explanation:"*Amazon Comprehend-Serviço da AWS para Processamento de Linguagem Natural (NLP), usado para análise de sentimentos.*Amazon Bedrock-Permite usar modelos de IA generativa que podem ser ajustados para interpretar sentimentos em textos.",
+        multiSelect: true
+ },
+    {
+        question: "Uma empresa médica está personalizando um modelo para fins de diagnóstico. O modelo precisa ser transparente e explicável para atender a requisitos regulatórios. Qual serviço AWS atende a esse requisito?",
+        options: [
+            "Amazon SageMaker Clarify",
+            "Amazon Rekognition para adicionar rótulos personalizados.",
+            "Amazon Inspector para segurança e conformidade.",
+            "Amazon Macie para criptografar e proteger os dados de treinamento."
+        ],
+        correct: 0,
+        explanation: "O SageMaker Clarify ajuda a identificar e explicar previsões do modelo, garantindo conformidade regulatória e transparência"
+    },
+    {
+        question: "Qual estratégia de aprendizado de IA permite autoaperfeiçoamento?",
+        options: [
+            "Aprendizado por reforço com recompensas por feedback positivo.",
+            "Aprendizado supervisionado com conjunto de dados manualmente organizado.",
+            "Aprendizado supervisionado com banco de dados de FAQ continuamente atualizado.",
+            "Aprendizado não supervisionado para encontrar clusters de consultas similares."
+        ],
+        correct: 0,
+        explanation:"Aprendizado por reforço com recompensas por feedback positivo dos clientes-Permite que a IA melhore suas respostas com base em interações reais e recompensas, ajustando o comportamento ao longo do tempo."
+    },
+    {
+        question: "Uma empresa está desenvolvendo uma aplicação que precisa gerar dados sintéticos com base em dados existentes. Qual tipo de modelo deve ser usado?",
+        options: [
+            "Rede adversária generativa (GAN).",
+            "XGBoost.",
+            "WaveNet.",
+            "Rede neural residual."
+        ],
+        correct: 0,
+        explanation:"Rede adversária generativa (GAN).- As GANs criam dados sintéticos realistas ao treinar dois modelos simultaneamente: um gerador e um discriminador."
+    },
+    {
+        question: "Uma empresa deseja criar um aplicativo usando o Amazon Bedrock. Qual modelo de precificação do Amazon Bedrock oferece flexibilidade sem compromisso de longo prazo?",
+        options: [
+            "Personalização de modelo.",
+            "Instância spot.",
+            "Taxa provisionada.",
+            "Sob demanda."
+        ],
+        correct: 3,
+        explanation: "Sob demanda (On-Demand)-Permite pagar apenas pelo uso, sem necessidade de compromisso de longo prazo, ideal para empresas com orçamento limitado."
+    },
+    {
+        question: "Uma empresa construiu um modelo de deep learning para detecção de objetos e implantou-o em produção. Qual processo de IA ocorre ao analisar novas imagens para identificar objetos?",
+        options: [
+            "Treinamento.",
+            "Implantação do modelo.",
+            "Inferência.",
+            "Correção de viés."
+        ],
+        correct: 2,
+        explanation:"Inferência (Inference)-Quando um modelo de IA já treinado analisa novos dados (como imagens) e gera previsões, esse processo é chamado de inferência."
+    }
+        ];
+
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        let currentQuestion = 0;
+        let score = 0;
+        let userName = "";
+        let timer;
+        let seconds = 0;
+        let timerPaused = false;
+        let shuffledQuestions = [];
+
+        function shuffleQuestions() {
+            shuffledQuestions = [...questions].sort(() => Math.random() - 0.5);
+        }
+
+        function startQuiz() {
+            userName = document.getElementById("userName").value;
+            if (!userName) {
+                alert("Por favor, digite seu nome para começar!");
+                return;
+            }
+            
+            // Hide the name instruction
+            document.getElementById("nameInstruction").style.display = "none";
+            
+            shuffleQuestions();
+            document.querySelector(".welcome-screen").style.display = "none";
+            document.querySelector(".quiz-container").style.display = "block";
+            startTimer();
+            showQuestion();
+        }
+
+        function startTimer() {
+            timer = setInterval(() => {
+                if (!timerPaused) {
+                    seconds++;
+                    const h = Math.floor(seconds / 3600);
+                    const m = Math.floor((seconds % 3600) / 60);
+                    const s = seconds % 60;
+                    document.getElementById("time").textContent = 
+                        `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+                }
+            }, 1000);
+        }
+
+        function showQuestion() {
+            const questionData = shuffledQuestions[currentQuestion];
+            const instruction = questionData.multiSelect ? 
+                '<p class="question-instruction">(Selecione DUAS opções corretas)</p>' : '';
+            
+            document.querySelector(".question").innerHTML = 
+                `<h2>Questão ${currentQuestion + 1} de ${shuffledQuestions.length}</h2>
+                 <p>${questionData.question}</p>
+                 ${instruction}`;
+            
+            // Create array of options with their correct/incorrect status
+            let optionsWithStatus = questionData.options.map((option, index) => ({
+                text: option,
+                isCorrect: questionData.multiSelect ? 
+                    questionData.correct.includes(index) : 
+                    index === questionData.correct
+            }));
+            
+            // Shuffle options
+            optionsWithStatus = shuffleArray(optionsWithStatus);
+            
+            // Update correct answer index based on new position
+            if (!questionData.multiSelect) {
+                questionData.correct = optionsWithStatus.findIndex(opt => opt.isCorrect);
+            } else {
+                questionData.correct = optionsWithStatus
+                    .map((opt, idx) => opt.isCorrect ? idx : -1)
+                    .filter(idx => idx !== -1);
+            }
+            
+            const optionsHtml = optionsWithStatus
+                .map((option, index) => 
+                    `<div class="option" onclick="selectOption(${index})">${option.text}</div>`)
+                .join("");
+            
+            document.querySelector(".options").innerHTML = optionsHtml;
+            document.querySelector(".feedback").style.display = "none";
+            document.querySelector(".next-button").style.display = "none";
+        }
+
+        function selectOption(optionIndex) {
+            const options = document.querySelectorAll(".option");
+            const questionData = shuffledQuestions[currentQuestion];
+            
+            if (questionData.multiSelect) {
+                const selectedOption = options[optionIndex];
+                if (selectedOption.classList.contains("selected")) {
+                    selectedOption.classList.remove("selected");
+                } else {
+                    const selectedCount = document.querySelectorAll(".option.selected").length;
+                    if (selectedCount < 2) {
+                        selectedOption.classList.add("selected");
+                    }
+                }
+                
+                if (document.querySelectorAll(".option.selected").length === 2) {
+                    const selectedIndices = Array.from(options)
+                        .map((opt, idx) => opt.classList.contains("selected") ? idx : -1)
+                        .filter(idx => idx !== -1);
+                    
+                    const correct = questionData.correct.every(i => selectedIndices.includes(i)) &&
+                                  selectedIndices.every(i => questionData.correct.includes(i));
+                    
+                    options.forEach((option, idx) => {
+                        option.onclick = null;
+                        if (questionData.correct.includes(idx)) {
+                            option.classList.add("correct");
+                        }
+                        if (selectedIndices.includes(idx) && !questionData.correct.includes(idx)) {
+                            option.classList.add("incorrect");
+                        }
+                    });
+                    
+                    if (correct) {
+                        score += 10;
+                    }
+                    
+                    const feedback = document.querySelector(".feedback");
+                    feedback.innerHTML = questionData.explanation;
+                    feedback.style.display = "block";
+                    
+                    document.querySelector(".next-button").style.display = "block";
+                }
+            } else {
+                options.forEach(option => {
+                    option.classList.remove("selected", "correct", "incorrect");
+                    option.onclick = null;
+                });
+
+                const selectedOption = options[optionIndex];
+                selectedOption.classList.add("selected");
+
+                if (optionIndex === questionData.correct) {
+                    selectedOption.classList.add("correct");
+                    score += 10;
+                } else {
+                    selectedOption.classList.add("incorrect");
+                    options[questionData.correct].classList.add("correct");
+                }
+
+                const feedback = document.querySelector(".feedback");
+                feedback.innerHTML = questionData.explanation;
+                feedback.style.display = "block";
+                
+                document.querySelector(".next-button").style.display = "block";
+            }
+        }
+
+        function nextQuestion() {
+            currentQuestion++;
+            if (currentQuestion < shuffledQuestions.length) {
+                showQuestion();
+            } else {
+                endQuiz();
+            }
+        }
+
+        function endQuiz() {
+            clearInterval(timer);
+            const container = document.querySelector(".quiz-container");
+            container.innerHTML = `
+                <h2>Parabéns, ${userName}!</h2>
+                <p>Você completou o quiz!</p>
+                <p>Pontuação: ${score} de ${shuffledQuestions.length * 10}</p>
+                <p>Tempo total: ${document.getElementById("time").textContent}</p>
+                <button onclick="location.reload()" class="btn">Recomeçar</button>
+             `;
+        }
+
+        document.getElementById("pauseTimer").addEventListener("click", function() {
+            timerPaused = !timerPaused;
+            this.textContent = timerPaused ? "Continuar" : "Pausar";
+        });
+    </script>
+</body>
+</html>
